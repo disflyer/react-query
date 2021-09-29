@@ -58,8 +58,8 @@ interface CreateAsyncStoragePersistorOptions {
   /** The key to use when storing the cache to localstorage */
   key?: string
   /** To avoid localstorage spamming,
-   * pass a time in ms to debounce saving the cache to disk */
-  debounceTime?: number
+   * pass a time in ms to throttle saving the cache to disk */
+  throttleTime?: number
 }
 
 interface AsyncStorage {
@@ -74,6 +74,6 @@ The default options are:
 ```js
 {
   key = `REACT_QUERY_OFFLINE_CACHE`,
-  debounceTime = 1000,
+  throttleTime = 1000,
 }
 ```

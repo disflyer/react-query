@@ -3,9 +3,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { persistQueryClient } from 'react-query/persistQueryClient-experimental'
+import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor-experimental'
 
 const queryClient = new QueryClient();
-
+const localStoragePersistor = createWebStoragePersistor({ storage: window.localStorage })
+persistQueryClient({
+  queryClient,
+  persistor: localStoragePersistor
+})
 
 export default function App() {
   return (
@@ -16,10 +22,13 @@ export default function App() {
 }
 
 function Example() {
-  const { isLoading, error, data, isFetching } = useQuery("repoData", () =>
+  const { isLoading, error, data, isFetching } = useQuery("repoData1", () =>
     fetch(
       "https://api.github.com/repos/tannerlinsley/react-query"
-    ).then((res) => res.json())
+    ).then((res) => res.json()),
+    {
+      refetchOnWindowFocus: false
+    }
   );
 
   if (isLoading) return "Loading...";
